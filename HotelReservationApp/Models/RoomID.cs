@@ -10,11 +10,22 @@ namespace HotelReservationApp.Models
     {
         public int FloorNumber { get; }
         public int RoomrNumber { get; }
-    }
+    
 
-    public override bool Equals(object? obj)
+        public override bool Equals(object? obj)
         {
             return obj is RoomID roomID && FloorNumber == roomID.FloorNumber && RoomrNumber == roomID.RoomrNumber;
         }
+
+        public override string ToString()
+        {
+            return $"{FloorNumber}{RoomrNumber}";
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(FloorNumber, RoomrNumber);
+        }
     }
 }
+

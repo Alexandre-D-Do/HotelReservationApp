@@ -8,5 +8,8 @@ namespace HotelReservationApp.Models
 {
     internal class Reservation
     {
+        public RoomID RoomID { get; }
+        public DateTime StartTIme { get; }
+        public DateTime EndTIme { get; }
     }
 }

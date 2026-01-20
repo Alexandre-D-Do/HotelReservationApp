@@ -6,7 +6,13 @@ using System.Threading.Tasks;
 
 namespace HotelReservationApp.Models
 {
-    internal class ReservationBook
+    public class ReservationBook
     {
+        private readonly Dictionary<RoomID, List<Reservation>> roomsToReservations;
+        public ReservationBook()
+        {
+            roomsToReservations = new Dictionary<RoomID, List<Reservation>>(); 
+        }
+
     }
 }
