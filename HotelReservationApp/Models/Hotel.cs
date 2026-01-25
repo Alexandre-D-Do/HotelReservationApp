@@ -23,9 +23,9 @@ namespace HotelReservationApp.Models
         /// </summary>
         /// <param name="username">The username of the user.</param>
         /// <returns>The reservations for the user.</returns>
-        public IEnumerable<Reservation> GetReservations(string username)
+        public IEnumerable<Reservation> GetAllReservations()
         {
-            return reservationBook.GetReservations(username);
+            return reservationBook.GetAllReservations();
         }
 
         /// <summary>

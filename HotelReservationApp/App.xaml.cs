@@ -26,7 +26,7 @@ namespace HotelReservationApp
                 hotel.MakeReservation(new Reservation(
                     new RoomID(1, 3),
                     "Alex Do",
-                    new DateTime(2026, 1, 1),
+                    new DateTime(2026, 1, 3),
                     new DateTime(2026, 1, 4)
                     ));
             }
