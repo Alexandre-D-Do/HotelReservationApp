@@ -19,10 +19,9 @@ namespace HotelReservationApp.Models
         }
 
         /// <summary>
-        /// Get the reservations for user.
+        /// Get all reservations.
         /// </summary>
-        /// <param name="username">The username of the user.</param>
-        /// <returns>The reservations for the user.</returns>
+        /// <returns>All current reservations.</returns>
         public IEnumerable<Reservation> GetAllReservations()
         {
             return reservationBook.GetAllReservations();
