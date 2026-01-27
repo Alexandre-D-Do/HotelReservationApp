@@ -1,5 +1,6 @@
 ﻿using HotelReservationApp.Exceptions;
 using HotelReservationApp.Models;
+using HotelReservationApp.ViewModels;
 using System.Configuration;
 using System.Data;
 using System.Windows;
@@ -13,30 +14,13 @@ namespace HotelReservationApp
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            Hotel hotel = new Hotel("Houston Inn");
-            try
+            MainWindow = new MainWindow()
             {
-                hotel.MakeReservation(new Reservation(
-                    new RoomID(1, 3),
-                    "Alex Do",
-                    new DateTime(2026, 1, 1),
-                    new DateTime(2026, 1, 1)
-                    ));
+                DataContext = new MainWindowViewModel()
 
-                hotel.MakeReservation(new Reservation(
-                    new RoomID(1, 3),
-                    "Alex Do",
-                    new DateTime(2026, 1, 3),
-                    new DateTime(2026, 1, 4)
-                    ));
-            }
+            };
 
-            catch (ReservationConflictException ex) 
-            {
-
-            }
-            IEnumerable<Reservation> reservations = hotel.GetReservations("Alex Do");
-
+            MainWindow.Show();
 
             base.OnStartup(e);
         }

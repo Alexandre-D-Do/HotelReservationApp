@@ -20,13 +20,42 @@
             
             <TextBlock Grid.Column="0" FontSize="24" Text="View Reservations"/>
             <Button Grid.Column="1" Margin="10, 0 ,0 ,0" Content="Make Reservation" Command="{Binding MakeReservationCommand}"/>
-            <ListView Grid.Row="1" Margin="0, 25, 0 ,0">
+            <ListView Grid.Row="1" Margin="0, 25, 0 ,0" ItemsSource="{Binding Reservations}">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Room ID"/>
-                        <GridViewColumn Header="Username"/>
-                        <GridViewColumn Header="Start Date"/>
-                        <GridViewColumn Header="End Date"/>
+                        <GridViewColumn Header="Room ID">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock HorizontalAlignment="Center" Text="{Binding RoomID}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Username">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock HorizontalAlignment="Center" Text="{Binding Username}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Start Date">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock HorizontalAlignment="Center" Text="{Binding StartDate}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="End Date">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock HorizontalAlignment="Center" Text="{Binding EndDate}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
                     </GridView>
                 </ListView.View>
             </ListView>

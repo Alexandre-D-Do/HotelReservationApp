@@ -9,13 +9,15 @@ using System.Windows.Input;
 
 namespace HotelReservationApp.ViewModels
 {
-    internal class ReservationListingViewModel :ViewModelBase
+    internal class ReservationListingViewModel : ViewModelBase
     {
-        private readonly ObservableCollection<Reservation> _reservations;
+        private readonly ObservableCollection<ReservationViewModel> _reservations;
+
+        public IEnumerable<ReservationViewModel> Reservations => _reservations;
         public ICommand MakeReservationCommand { get; }
         public ReservationListingViewModel()
         {
-            
+            _reservations = new ObservableCollection<ReservationViewModel>();
         }
     }
 }
