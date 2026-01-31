@@ -12,8 +12,8 @@ namespace HotelReservationApp.ViewModels
         private readonly Reservation _reservation;
         public string RoomID => _reservation.RoomID?.ToString();
         public string Username => _reservation.Username;
-        public string StartDate => _reservation.StartTime.ToString("d");
-        public string EndDate => _reservation.EndTime.ToString("d");
+        public string StartDate => _reservation.StartDate.ToString("d");
+        public string EndDate => _reservation.EndDate.ToString("d");
 
         public ReservationViewModel(Reservation reservation)
         {

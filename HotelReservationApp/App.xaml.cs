@@ -12,11 +12,18 @@ namespace HotelReservationApp
     /// </summary>
     public partial class App : Application
     {
+        private readonly Hotel _hotel;
+
+        public App()
+        {
+            _hotel = new Hotel("Houston Inn");
+        }
+        
         protected override void OnStartup(StartupEventArgs e)
         {
             MainWindow = new MainWindow()
             {
-                DataContext = new MainWindowViewModel()
+                DataContext = new MainWindowViewModel(_hotel)
 
             };
 
