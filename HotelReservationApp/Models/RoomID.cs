@@ -13,10 +13,10 @@ namespace HotelReservationApp.Models
         public int FloorNumber { get; }
         public int RoomNumber { get; }
 
-        public RoomID(int floorNumber, int roomNumber)
+        public RoomID(string floorNumber, string roomNumber)
         {
-            FloorNumber = floorNumber;
-            RoomNumber = roomNumber;
+            FloorNumber = int.Parse(floorNumber);
+            RoomNumber = int.Parse(roomNumber);
         }
 
         /// <summary>

@@ -37,10 +37,10 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Floor Number" />
-            <TextBox Grid.Row="1" Grid.Column="0" Margin="0, 5, 0 ,0" Text="{Binding FloorNumber, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Grid.Row="1" Grid.Column="0" Margin="0, 5, 0 ,0" PreviewKeyDown="WhiteSpaceNegation" PreviewTextInput="NumberValidation" Text="{Binding FloorNumber, UpdateSourceTrigger=PropertyChanged}"/>
 
             <TextBlock Grid.Row="0" Grid.Column="1" Margin ="5, 0, 0, 0" Text="Room Number" />
-            <TextBox Grid.Row="1" Grid.Column="1" Margin="10, 5, 0 ,0" Text="{Binding RoomNumber, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Margin="10, 5, 0 ,0" PreviewKeyDown="WhiteSpaceNegation" PreviewTextInput="NumberValidation" Text="{Binding RoomNumber, UpdateSourceTrigger=PropertyChanged}"/>
             
         </Grid>
 

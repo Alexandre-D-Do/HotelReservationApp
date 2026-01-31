@@ -25,8 +25,8 @@ namespace HotelReservationApp.ViewModels
 			}
 		}
 
-		private int _floorNumber;
-		public int FloorNumber
+		private string _floorNumber;
+		public string FloorNumber
 		{
 			get
 			{
@@ -39,8 +39,8 @@ namespace HotelReservationApp.ViewModels
 			}
 		}
 
-		private int _roomNumber;
-		public int RoomNumber
+		private string _roomNumber;
+		public string RoomNumber
 		{
 			get
 			{

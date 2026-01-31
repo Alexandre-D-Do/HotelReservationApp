@@ -27,9 +27,21 @@ namespace HotelReservationApp.Commands
 
         public override bool CanExecute(object? parameter)
         {
+            // Check if floor number is parsable
+            if (!int.TryParse(_makeReservationViewModel.FloorNumber, out int floorNumberValue))
+            {
+                return false;
+            }
+
+            // Check if room number is parsable
+            if (!int.TryParse(_makeReservationViewModel.RoomNumber, out int roomNumberValue))
+            {
+                return false;
+            }
+
             return !string.IsNullOrWhiteSpace(_makeReservationViewModel.Username) &&
-                _makeReservationViewModel.FloorNumber > 0 && 
-                _makeReservationViewModel.RoomNumber > 0 &&
+                floorNumberValue > 0 &&
+                roomNumberValue > 0 &&
                 DateTime.Compare(_makeReservationViewModel.StartDate, _makeReservationViewModel.EndDate) < 0 &&
                 base.CanExecute(parameter);
         }
