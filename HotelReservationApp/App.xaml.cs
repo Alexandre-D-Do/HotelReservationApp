@@ -1,5 +1,6 @@
 ﻿using HotelReservationApp.Exceptions;
 using HotelReservationApp.Models;
+using HotelReservationApp.Stores;
 using HotelReservationApp.ViewModels;
 using System.Configuration;
 using System.Data;
@@ -13,17 +14,21 @@ namespace HotelReservationApp
     public partial class App : Application
     {
         private readonly Hotel _hotel;
+        private readonly NavigationStore _navigationStore;
 
         public App()
         {
             _hotel = new Hotel("Houston Inn");
+            _navigationStore = new NavigationStore();
         }
         
         protected override void OnStartup(StartupEventArgs e)
         {
+            _navigationStore.CurrentViewModel = new ReservationListingViewModel(_navigationStore);
+            
             MainWindow = new MainWindow()
             {
-                DataContext = new MainWindowViewModel(_hotel)
+                DataContext = new MainWindowViewModel(_navigationStore)
 
             };
 
