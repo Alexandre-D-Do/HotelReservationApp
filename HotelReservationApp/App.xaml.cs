@@ -1,5 +1,6 @@
 ﻿using HotelReservationApp.Exceptions;
 using HotelReservationApp.Models;
+using HotelReservationApp.Services;
 using HotelReservationApp.Stores;
 using HotelReservationApp.ViewModels;
 using System.Configuration;
@@ -24,7 +25,7 @@ namespace HotelReservationApp
         
         protected override void OnStartup(StartupEventArgs e)
         {
-            _navigationStore.CurrentViewModel = new ReservationListingViewModel(_navigationStore);
+            _navigationStore.CurrentViewModel = CreateReservationListingViewModel();
             
             MainWindow = new MainWindow()
             {
@@ -35,6 +36,16 @@ namespace HotelReservationApp
             MainWindow.Show();
 
             base.OnStartup(e);
+        }
+
+        private MakeReservationViewModel CreateMakeReservationViewModel()
+        {
+            return new MakeReservationViewModel(_hotel, new NavigationService(_navigationStore, CreateReservationListingViewModel));
+        }
+
+        private ReservationListingViewModel CreateReservationListingViewModel()
+        {
+            return new ReservationListingViewModel(_hotel, new NavigationService(_navigationStore, CreateMakeReservationViewModel));
         }
     }
 

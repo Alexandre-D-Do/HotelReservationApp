@@ -1,5 +1,7 @@
 ﻿using HotelReservationApp.Commands;
 using HotelReservationApp.Models;
+using HotelReservationApp.Services;
+using HotelReservationApp.Stores;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -84,10 +86,10 @@ namespace HotelReservationApp.ViewModels
 		public ICommand SubmitCommand { get;}
         public ICommand CancelCommand { get; }
 
-        public MakeReservationViewModel(Hotel hotel)
+        public MakeReservationViewModel(Hotel hotel, NavigationService reservationListingNavigationService)
         {
-			SubmitCommand = new MakeReservationCommand(this, hotel);
-			CancelCommand = new CancelMakeReservationCommand();
+			SubmitCommand = new MakeReservationCommand(this, hotel, reservationListingNavigationService);
+			CancelCommand = new NavigateCommand(reservationListingNavigationService);
         }
     }
 }

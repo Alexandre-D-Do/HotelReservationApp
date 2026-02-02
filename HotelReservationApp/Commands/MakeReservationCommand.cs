@@ -1,5 +1,6 @@
 ﻿using HotelReservationApp.Exceptions;
 using HotelReservationApp.Models;
+using HotelReservationApp.Services;
 using HotelReservationApp.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -14,11 +15,14 @@ namespace HotelReservationApp.Commands
     {
         private readonly MakeReservationViewModel _makeReservationViewModel;
         private readonly Hotel _hotel;
+        private readonly NavigationService _reservationListingNavigationService;
 
-        public MakeReservationCommand(MakeReservationViewModel makeReservationViewModel, Hotel hotel)
+        public MakeReservationCommand(MakeReservationViewModel makeReservationViewModel, Hotel hotel, 
+            NavigationService reservationListingNavigationService)
         {
             _makeReservationViewModel = makeReservationViewModel;
             _hotel = hotel;
+            _reservationListingNavigationService = reservationListingNavigationService;
 
             _makeReservationViewModel.PropertyChanged += OnViewModelPropertyChanged;
         }
@@ -71,6 +75,8 @@ namespace HotelReservationApp.Commands
             {
                 _hotel.MakeReservation(reservation);
                 MessageBox.Show("Successfully reserved.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                _reservationListingNavigationService.Navigate();
+
             }
             catch(ReservationConflictException)
             {
