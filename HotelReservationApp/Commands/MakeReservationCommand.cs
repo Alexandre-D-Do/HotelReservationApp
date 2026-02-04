@@ -11,7 +11,7 @@ using System.Windows;
 
 namespace HotelReservationApp.Commands
 {
-    internal class MakeReservationCommand : CommandBase
+    internal class MakeReservationCommand : AsyncCommandBase
     {
         private readonly MakeReservationViewModel _makeReservationViewModel;
         private readonly Hotel _hotel;
@@ -29,7 +29,7 @@ namespace HotelReservationApp.Commands
 
         
 
-        public override bool CanExecute(object? parameter)
+        public override bool CanExecute(object parameter)
         {
             // Check if floor number is parsable
             if (!int.TryParse(_makeReservationViewModel.FloorNumber, out int floorNumberValue))
@@ -50,7 +50,7 @@ namespace HotelReservationApp.Commands
                 base.CanExecute(parameter);
         }
 
-        private void OnViewModelPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void OnViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(_makeReservationViewModel.Username) || 
                 e.PropertyName == nameof(_makeReservationViewModel.FloorNumber) || 
@@ -62,7 +62,7 @@ namespace HotelReservationApp.Commands
             }
         }
 
-        public override void Execute(object? parameter)
+        public override async Task ExecuteAsync(object parameter)
         {
             Reservation reservation = new Reservation(
                 new RoomID(_makeReservationViewModel.FloorNumber, _makeReservationViewModel.RoomNumber),
@@ -73,7 +73,7 @@ namespace HotelReservationApp.Commands
 
             try
             {
-                _hotel.MakeReservation(reservation);
+                await _hotel.MakeReservation(reservation);
                 MessageBox.Show("Successfully reserved.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 _reservationListingNavigationService.Navigate();
 
@@ -82,6 +82,11 @@ namespace HotelReservationApp.Commands
             {
                 MessageBox.Show("This room is already taken within the selected timeframe.", 
                     "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Failed to make reservation.",
+                   "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

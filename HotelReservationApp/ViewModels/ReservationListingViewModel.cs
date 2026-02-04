@@ -20,6 +20,7 @@ namespace HotelReservationApp.ViewModels
 
         public IEnumerable<ReservationViewModel> Reservations => _reservations;
 
+        public ICommand LoadReservationsCommand { get; }
         public ICommand MakeReservationCommand { get; }
 
         public ReservationListingViewModel(Hotel hotel, NavigationService makeReservationNavigationService) 
@@ -28,6 +29,8 @@ namespace HotelReservationApp.ViewModels
             _hotel = hotel;
 
             _reservations = new ObservableCollection<ReservationViewModel>();
+
+            LoadReservationsCommand = new LoadReservationsCommand(this, _hotel);
 
             MakeReservationCommand = new NavigateCommand(makeReservationNavigationService);
 
