@@ -2,6 +2,9 @@
 using HotelReservationApp.Exceptions;
 using HotelReservationApp.Models;
 using HotelReservationApp.Services;
+using HotelReservationApp.Services.ReservationConflictValidators;
+using HotelReservationApp.Services.ReservationCreators;
+using HotelReservationApp.Services.ReservationProviders;
 using HotelReservationApp.Stores;
 using HotelReservationApp.ViewModels;
 using Microsoft.EntityFrameworkCore;
@@ -36,17 +39,19 @@ namespace HotelReservationApp
                 });
             }).Build();
 
-            
+            IReservationProvider reservationProvider = new DatabaseReservationProvider();
+            IReservationCreator reservationCreator = new DatabaseReservationCreator();
+            IReservationConflictValidator reservationConflictValidator = new DatabaseReservationConflictValidator();
 
-            _hotel = new Hotel("Houston Inn");
+            ReservationBook reservationBook = new ReservationBook(reservationProvider, reservationCreator, reservationConflictValidator);
+            _hotel = new Hotel("Houston Inn", reservationBook);
             _navigationStore = new NavigationStore();
         }
         
         protected override void OnStartup(StartupEventArgs e)
         {
             _host.Start();
-            HotelReservationAppDbContext hotelReservationAppDbContext = _host.Services.GetRequiredService<HotelReservationAppDbContext>();
-            using (hotelReservationAppDbContext)
+            using (HotelReservationAppDbContext hotelReservationAppDbContext = _host.Services.GetRequiredService<HotelReservationAppDbContext>())
             {
                 hotelReservationAppDbContext.Database.Migrate();
             }
@@ -71,7 +76,7 @@ namespace HotelReservationApp
 
         private ReservationListingViewModel CreateReservationListingViewModel()
         {
-            return new ReservationListingViewModel(_hotel, new NavigationService(_navigationStore, CreateMakeReservationViewModel));
+            return ReservationListingViewModel.LoadViewModel(_hotel, new NavigationService(_navigationStore, CreateMakeReservationViewModel));
         }
     }
 

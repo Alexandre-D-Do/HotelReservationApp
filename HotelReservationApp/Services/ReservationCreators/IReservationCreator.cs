@@ -1,10 +1,12 @@
-﻿using System;
+﻿using HotelReservationApp.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace HotelReservationApp.Services.ReservationCreators
 {
-    internal interface IReservationCreator
+    public interface IReservationCreator
     {
+        Task CreateReservation(Reservation reservation);
     }
 }

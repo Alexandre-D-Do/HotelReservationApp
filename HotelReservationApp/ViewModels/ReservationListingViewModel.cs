@@ -14,7 +14,7 @@ namespace HotelReservationApp.ViewModels
 {
     public class ReservationListingViewModel : ViewModelBase
     {
-        private readonly Hotel _hotel;
+        
         
         private readonly ObservableCollection<ReservationViewModel> _reservations;
 
@@ -26,22 +26,26 @@ namespace HotelReservationApp.ViewModels
         public ReservationListingViewModel(Hotel hotel, NavigationService makeReservationNavigationService) 
         {
 
-            _hotel = hotel;
-
             _reservations = new ObservableCollection<ReservationViewModel>();
 
-            LoadReservationsCommand = new LoadReservationsCommand(this, _hotel);
+            LoadReservationsCommand = new LoadReservationsCommand(this, hotel);
 
             MakeReservationCommand = new NavigateCommand(makeReservationNavigationService);
 
-            UpdateReservations();
         }
 
-        private void UpdateReservations()
+        public static ReservationListingViewModel LoadViewModel(Hotel hotel, NavigationService makeReservationNavigationService)
+        {
+            ReservationListingViewModel viewModel = new ReservationListingViewModel(hotel, makeReservationNavigationService);
+            viewModel.LoadReservationsCommand.Execute(null);
+            return viewModel;
+        }
+
+        public void UpdateReservations(IEnumerable<Reservation> reservations)
         {
             _reservations.Clear();
 
-            foreach (Reservation reservation in _hotel.GetAllReservations())
+            foreach (Reservation reservation in reservations)
             {
                 ReservationViewModel reservationViewModel = new ReservationViewModel(reservation);
                 _reservations.Add(reservationViewModel);

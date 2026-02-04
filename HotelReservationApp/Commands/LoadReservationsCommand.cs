@@ -3,6 +3,7 @@ using HotelReservationApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows;
 
 namespace HotelReservationApp.Commands
 {
@@ -17,9 +18,18 @@ namespace HotelReservationApp.Commands
             _viewModel = viewModel;
         }
 
-        public override async Tast ExecuteAsync(object parameter)
+        public override async Task ExecuteAsync(object parameter)
         {
-            ;
+            try
+            {
+                IEnumerable<Reservation> reservations = await _hotel.GetAllReservations();
+                _viewModel.UpdateReservations(reservations);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Failed to load reservations.",
+                   "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

@@ -18,7 +18,7 @@ namespace HotelReservationApp.Commands
         {
             _navigationService = navigationService;
         }
-        public override void Execute(object? parameter)
+        public override void Execute(object parameter)
         {
             _navigationService.Navigate();
         }

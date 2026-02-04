@@ -8,23 +8,23 @@ namespace HotelReservationApp.Models
 {
     public class Hotel
     {
-        private readonly ReservationBook reservationBook;
+        private readonly ReservationBook _reservationBook;
 
         public string Name { get; }
 
-        public Hotel(string name)
+        public Hotel(string name, ReservationBook reservationBook)
         {
             Name = name;
-            reservationBook = new ReservationBook();
+            _reservationBook = reservationBook;
         }
 
         /// <summary>
         /// Get all reservations.
         /// </summary>
         /// <returns>All current reservations.</returns>
-        public IEnumerable<Reservation> GetAllReservations()
+        public async Task<IEnumerable<Reservation>> GetAllReservations()
         {
-            return reservationBook.GetAllReservations();
+            return await _reservationBook.GetAllReservations();
         }
 
         /// <summary>
@@ -34,9 +34,9 @@ namespace HotelReservationApp.Models
         /// <exception cref="ReservationConflictException">
         /// Exception thrown when new reservation conflicts with existing reservation.
         /// </exception>
-        public void MakeReservation(Reservation reservation) 
+        public async Task MakeReservation(Reservation reservation) 
         {
-            reservationBook.AddReservation(reservation);
+            await _reservationBook.AddReservation(reservation);
         }
 
     }
