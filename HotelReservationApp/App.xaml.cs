@@ -24,6 +24,7 @@ namespace HotelReservationApp
         private readonly IHost _host;
         private readonly Hotel _hotel;
         private readonly NavigationStore _navigationStore;
+        private readonly HotelStore _hotelStore;
 
         public App()
         {
@@ -44,7 +45,9 @@ namespace HotelReservationApp
             IReservationConflictValidator reservationConflictValidator = new DatabaseReservationConflictValidator();
 
             ReservationBook reservationBook = new ReservationBook(reservationProvider, reservationCreator, reservationConflictValidator);
+
             _hotel = new Hotel("Houston Inn", reservationBook);
+            _hotelStore = new HotelStore(_hotel);
             _navigationStore = new NavigationStore();
         }
         
@@ -71,12 +74,12 @@ namespace HotelReservationApp
 
         private MakeReservationViewModel CreateMakeReservationViewModel()
         {
-            return new MakeReservationViewModel(_hotel, new NavigationService(_navigationStore, CreateReservationListingViewModel));
+            return new MakeReservationViewModel(_hotelStore, new NavigationService(_navigationStore, CreateReservationListingViewModel));
         }
 
         private ReservationListingViewModel CreateReservationListingViewModel()
         {
-            return ReservationListingViewModel.LoadViewModel(_hotel, new NavigationService(_navigationStore, CreateMakeReservationViewModel));
+            return ReservationListingViewModel.LoadViewModel(_hotelStore, new NavigationService(_navigationStore, CreateMakeReservationViewModel));
         }
     }
 
