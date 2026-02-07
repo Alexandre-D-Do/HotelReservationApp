@@ -65,6 +65,7 @@ namespace HotelReservationApp.Commands
 
         public override async Task ExecuteAsync(object parameter)
         {
+            _makeReservationViewModel.IsLoading = true;
             Reservation reservation = new Reservation(
                 new RoomID(_makeReservationViewModel.FloorNumber, _makeReservationViewModel.RoomNumber),
                 _makeReservationViewModel.Username, 
@@ -89,6 +90,7 @@ namespace HotelReservationApp.Commands
                 MessageBox.Show("Failed to make reservation.",
                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            _makeReservationViewModel.IsLoading = false;
         }
     }
 }

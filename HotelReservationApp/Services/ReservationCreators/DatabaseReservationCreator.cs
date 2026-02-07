@@ -22,7 +22,6 @@ namespace HotelReservationApp.Services.ReservationCreators
 
                 context.Reservations.Add(reservationDTO);
                 await context.SaveChangesAsync();
-
             }
         }
 

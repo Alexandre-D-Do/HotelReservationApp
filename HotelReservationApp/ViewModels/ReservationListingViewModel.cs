@@ -23,6 +23,19 @@ namespace HotelReservationApp.ViewModels
         public ICommand LoadReservationsCommand { get; }
         public ICommand MakeReservationCommand { get; }
 
+        private bool _isLoading;
+
+        public bool IsLoading
+        {
+            get { return _isLoading; }
+            set 
+            { 
+                _isLoading = value;
+                OnPropertyChanged(nameof(IsLoading));
+            }
+        }
+
+
         public ReservationListingViewModel(HotelStore hotelStore, NavigationService makeReservationNavigationService) 
         {
             _hotelStore = hotelStore;

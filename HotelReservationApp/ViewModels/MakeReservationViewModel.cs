@@ -3,7 +3,9 @@ using HotelReservationApp.Models;
 using HotelReservationApp.Services;
 using HotelReservationApp.Stores;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,8 +13,22 @@ using System.Windows.Input;
 
 namespace HotelReservationApp.ViewModels
 {
-    public class MakeReservationViewModel : ViewModelBase
+    public class MakeReservationViewModel : ViewModelBase, INotifyDataErrorInfo
     {
+        
+
+        private bool _isLoading;
+
+		public bool IsLoading
+		{
+			get { return _isLoading; }
+			set 
+			{ 
+				_isLoading = value;
+				OnPropertyChanged(nameof(IsLoading));
+			}
+		}
+
 		private string _username;
 		public string Username
 		{
@@ -70,26 +86,73 @@ namespace HotelReservationApp.ViewModels
 		}
 
 		private DateTime _endDate = new DateTime(2026, 1, 8);
-		public DateTime EndDate
+
+        
+
+        public DateTime EndDate
 		{
 			get
 			{
 				return _endDate;
 			}
 			set
-			{
-				_endDate = value;
-				OnPropertyChanged(nameof(EndDate));
-			}
-		}
+            {
+                _endDate = value;
+                OnPropertyChanged(nameof(EndDate));
 
-		public ICommand SubmitCommand { get;}
+                ClearErrors(nameof(EndDate);
+
+                if (EndDate < StartDate)
+                {
+                    List<string> endDateErrors = new List<string>()
+                    {
+                        "The end date cannot be before the start date."
+                    };
+                    AddError(endDateErrors);
+                    OnErrorsChanged(nameof(EndDate);
+                }
+
+
+            }
+        }
+
+        private void AddError(List<string> endDateErrors)
+        {
+            _propertyNameToErrorsDictionary.Add(nameof(EndDate), endDateErrors);
+        }
+
+        public ICommand SubmitCommand { get;}
         public ICommand CancelCommand { get; }
+
+		
 
         public MakeReservationViewModel(HotelStore hotelStore, NavigationService reservationListingNavigationService)
         {
 			SubmitCommand = new MakeReservationCommand(this, hotelStore, reservationListingNavigationService);
 			CancelCommand = new NavigateCommand(reservationListingNavigationService);
+			_propertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
+        }
+
+        private readonly Dictionary<string, List<string>> _propertyNameToErrorsDictionary;
+		public bool HasErrors => _propertyNameToErrorsDictionary.Any();
+
+
+        public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
+        
+
+        public IEnumerable GetErrors(string? propertyName)
+        {
+			return _propertyNameToErrorsDictionary.GetValueOrDefault(propertyName, new List<string>());
+        }
+
+        private void ClearErrors(string propertyName)
+        {
+            _propertyNameToErrorsDictionary.Remove(propertyName);
+        }
+
+        private void OnErrorsChanged(string propertyName)
+        {
+            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
         }
     }
 }
