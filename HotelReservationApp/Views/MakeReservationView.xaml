@@ -9,8 +9,8 @@
     <UserControl.Resources>
         <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
     </UserControl.Resources>
-    <Grid>
-        <custom:LoadingSpinner Diameter="100" Thickness="5" Color="Gray"  IsLoading="{Binding IsLoading}"/>
+    <Grid Background="#1E1E1E">
+        <custom:LoadingSpinner Diameter="100" Thickness="5" Color="White"  IsLoading="{Binding IsLoading}"/>
         <Grid Grid.IsSharedSizeScope="True" Visibility="{Binding IsLoading, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>

@@ -82,12 +82,19 @@ namespace HotelReservationApp.ViewModels
 			{
 				_startDate = value;
 				OnPropertyChanged(nameof(StartDate));
+
+				ClearErrors(nameof(StartDate));
+				ClearErrors(nameof(EndDate));
+
+				if(EndDate < StartDate)
+				{
+					AddError("The start date cannot be after the end date.", nameof(StartDate));
+				}
+
 			}
 		}
 
 		private DateTime _endDate = new DateTime(2026, 1, 8);
-
-        
 
         public DateTime EndDate
 		{
@@ -100,25 +107,16 @@ namespace HotelReservationApp.ViewModels
                 _endDate = value;
                 OnPropertyChanged(nameof(EndDate));
 
-                ClearErrors(nameof(EndDate);
+				ClearErrors(nameof(StartDate));
+                ClearErrors(nameof(EndDate));
 
                 if (EndDate < StartDate)
                 {
-                    List<string> endDateErrors = new List<string>()
-                    {
-                        "The end date cannot be before the start date."
-                    };
-                    AddError(endDateErrors);
-                    OnErrorsChanged(nameof(EndDate);
+                    AddError("The end date cannot be before the start date.", nameof(EndDate));
                 }
 
 
             }
-        }
-
-        private void AddError(List<string> endDateErrors)
-        {
-            _propertyNameToErrorsDictionary.Add(nameof(EndDate), endDateErrors);
         }
 
         public ICommand SubmitCommand { get;}
@@ -145,9 +143,21 @@ namespace HotelReservationApp.ViewModels
 			return _propertyNameToErrorsDictionary.GetValueOrDefault(propertyName, new List<string>());
         }
 
+        private void AddError(string errorMessage, string propertyName)
+        {
+            if (!_propertyNameToErrorsDictionary.ContainsKey(propertyName))
+            {
+                _propertyNameToErrorsDictionary.Add(propertyName, new List<string>());
+            }
+
+            _propertyNameToErrorsDictionary[propertyName].Add(errorMessage);
+            OnErrorsChanged(propertyName);
+        }
+
         private void ClearErrors(string propertyName)
         {
             _propertyNameToErrorsDictionary.Remove(propertyName);
+            OnErrorsChanged(propertyName);
         }
 
         private void OnErrorsChanged(string propertyName)
