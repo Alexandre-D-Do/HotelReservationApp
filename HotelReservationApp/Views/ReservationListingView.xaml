@@ -12,12 +12,13 @@
         <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
     </UserControl.Resources>
 
-    <Grid Background="#1E1E1E">
+    <Grid>
         <custom:LoadingSpinner Diameter="100" Thickness="5" Color="White"  IsLoading="{Binding IsLoading}"/>
         <Grid Visibility="{Binding IsLoading, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0">
@@ -26,10 +27,9 @@
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="0" FontSize="24" Text="View Reservations"/>
-                <Button Grid.Column="1" Margin="10, 0 ,0 ,0" Content="Make Reservation" Command="{Binding MakeReservationCommand}"/>
-                <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" Visibility="{Binding HasErrorMessage, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                <ListView Grid.Row="1" Margin="0, 25, 0 ,0" ItemsSource="{Binding Reservations}" 
+                        <TextBlock Grid.Column="0" FontSize="24" Text="View Reservations"/>
+                        <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" Visibility="{Binding HasErrorMessage, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <ListView Grid.Row="1" Margin="0, 50, 0 ,0" ItemsSource="{Binding Reservations}" 
                           Visibility="{Binding HasErrorMessage, Converter={StaticResource InverseBooleanToVisibilityConverter}}" >
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
@@ -70,6 +70,7 @@
                     </ListView.View>
                 </ListView>
             </Grid>
+        <Button Style="{StaticResource ApplicationButton}" Grid.Row="2" Margin="0, 5 ,0, 0" Content="Make Reservation" Command="{Binding MakeReservationCommand}" FontSize="10" Height="25" Width="100" HorizontalAlignment="Right"/>
         </Grid>
     </Grid>
 </UserControl>

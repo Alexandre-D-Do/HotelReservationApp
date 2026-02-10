@@ -1,14 +1,24 @@
 ﻿<Application x:Class="HotelReservationApp.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:HotelReservationApp"
-             >
+             xmlns:local="clr-namespace:HotelReservationApp"           
+             ShutdownMode="OnMainWindowClose">
     <Application.Resources>
-        <Style TargetType="Button">
-            <Setter Property="Padding" Value="10, 5" />
-        </Style>
-        <Style TargetType="TextBox">
-            <Setter Property="Padding" Value="2" />
-        </Style>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/ApplicationWindowStyles.xaml"/>
+                <ResourceDictionary Source="/Styles/CloseButtonStyles.xaml"/>
+                <ResourceDictionary Source="/Styles/TitleBarButtonStyles.xaml"/>
+                <ResourceDictionary Source="/Styles/ApplicationButtonStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="Button">
+                <Setter Property="Padding" Value="10, 5" />
+            </Style>
+            <Style TargetType="TextBox">
+                <Setter Property="Padding" Value="2" />
+            </Style>
+        </ResourceDictionary>
+        
+
     </Application.Resources>
 </Application>

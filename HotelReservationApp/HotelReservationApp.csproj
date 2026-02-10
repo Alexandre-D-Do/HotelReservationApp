@@ -19,4 +19,10 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Styles\ApplicationWindowStyles.xaml.cs">
+      <Generator>MSBuild:Compile</Generator>
+    </Compile>
+  </ItemGroup>
+
 </Project>
