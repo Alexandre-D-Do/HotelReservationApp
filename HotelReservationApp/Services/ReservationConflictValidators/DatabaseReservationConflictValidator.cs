@@ -11,9 +11,16 @@ namespace HotelReservationApp.Services.ReservationConflictValidators
 {
     public class DatabaseReservationConflictValidator : IReservationConflictValidator
     {
+        string _connectionString;
+
+        public DatabaseReservationConflictValidator(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
+
         public async Task<Reservation> GetConflictingReservation(Reservation reservation)
         {
-            var contextOptions = new DbContextOptionsBuilder<HotelReservationAppDbContext>().UseSqlServer(ConfigurationManager.ConnectionStrings["ReservationsDatabase"].ConnectionString).Options;
+            var contextOptions = new DbContextOptionsBuilder<HotelReservationAppDbContext>().UseSqlServer(_connectionString).Options;
 
             using (HotelReservationAppDbContext context = new HotelReservationAppDbContext(contextOptions))
             {

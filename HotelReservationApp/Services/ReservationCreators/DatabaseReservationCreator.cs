@@ -11,10 +11,17 @@ namespace HotelReservationApp.Services.ReservationCreators
 {
     public class DatabaseReservationCreator : IReservationCreator
     {
+        string _connectionString;
+
+        public DatabaseReservationCreator(string connectionString)
+        {
+            _connectionString=connectionString;
+        }
+
         public async Task CreateReservation(Reservation reservation)
         {
 
-            var contextOptions = new DbContextOptionsBuilder<HotelReservationAppDbContext>().UseSqlServer(ConfigurationManager.ConnectionStrings["ReservationsDatabase"].ConnectionString).Options;
+            var contextOptions = new DbContextOptionsBuilder<HotelReservationAppDbContext>().UseSqlServer(_connectionString).Options;
 
             using (HotelReservationAppDbContext context = new HotelReservationAppDbContext(contextOptions))
             {

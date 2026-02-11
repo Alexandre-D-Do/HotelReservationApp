@@ -16,10 +16,10 @@ namespace HotelReservationApp.Commands
     {
         private readonly MakeReservationViewModel _makeReservationViewModel;
         private readonly HotelStore _hotelStore;
-        private readonly NavigationService _reservationListingNavigationService;
+        private readonly NavigationService<ReservationListingViewModel> _reservationListingNavigationService;
 
         public MakeReservationCommand(MakeReservationViewModel makeReservationViewModel, HotelStore hotelStore, 
-            NavigationService reservationListingNavigationService)
+            NavigationService<ReservationListingViewModel> reservationListingNavigationService)
         {
             _makeReservationViewModel = makeReservationViewModel;
             _hotelStore = hotelStore;

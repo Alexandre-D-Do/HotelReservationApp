@@ -18,7 +18,5 @@
                 <Setter Property="Padding" Value="2" />
             </Style>
         </ResourceDictionary>
-        
-
     </Application.Resources>
 </Application>

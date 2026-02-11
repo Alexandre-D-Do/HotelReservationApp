@@ -12,9 +12,16 @@ namespace HotelReservationApp.Services.ReservationProviders
 {
     public class DatabaseReservationProvider : IReservationProvider
     {
+        string _connectionString;
+
+        public DatabaseReservationProvider(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
+
         public async Task<IEnumerable<Reservation>> GetAllReservations()
         {
-            var contextOptions = new DbContextOptionsBuilder<HotelReservationAppDbContext>().UseSqlServer(ConfigurationManager.ConnectionStrings["ReservationsDatabase"].ConnectionString).Options;
+            var contextOptions = new DbContextOptionsBuilder<HotelReservationAppDbContext>().UseSqlServer(_connectionString).Options;
 
             using (HotelReservationAppDbContext context = new HotelReservationAppDbContext(contextOptions))
             {
