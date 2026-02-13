@@ -5,6 +5,7 @@ using HotelReservationApp.Models;
 using HotelReservationApp.Services;
 using HotelReservationApp.Services.ReservationConflictValidators;
 using HotelReservationApp.Services.ReservationCreators;
+using HotelReservationApp.Services.ReservationDeleters;
 using HotelReservationApp.Services.ReservationProviders;
 using HotelReservationApp.Stores;
 using HotelReservationApp.ViewModels;
@@ -44,6 +45,7 @@ namespace HotelReservationApp
                 /// Register our services
                 services.AddSingleton<IReservationProvider, DatabaseReservationProvider>((s) => new DatabaseReservationProvider(connectionString));
                 services.AddSingleton<IReservationCreator, DatabaseReservationCreator>((s) => new DatabaseReservationCreator(connectionString));
+                services.AddSingleton<IReservationDeleter, DatabaseReservationDeleter>((s) => new DatabaseReservationDeleter(connectionString));
                 services.AddSingleton<IReservationConflictValidator, DatabaseReservationConflictValidator>((s) => new DatabaseReservationConflictValidator(connectionString));
 
                 /// Register Reservation Book and Hotel through factory function

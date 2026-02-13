@@ -46,6 +46,8 @@ namespace HotelReservationApp.Models
         {
             return HashCode.Combine(FloorNumber, RoomNumber);
         }
+
+        
     }
 }
 

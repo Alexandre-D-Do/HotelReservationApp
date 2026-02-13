@@ -12,6 +12,7 @@ namespace HotelReservationApp.Stores
         private Lazy<Task> _initializeLazy;
         public IEnumerable<Reservation> Reservations => _reservations;
         public event Action<Reservation> ReservationCreated;
+        public event Action ReservationDeleted;
 
         public HotelStore(Hotel hotel)
         {
@@ -33,7 +34,7 @@ namespace HotelReservationApp.Stores
             }
         }  
         
-        private async Task Initialize()
+        public async Task Initialize()
         {
             IEnumerable<Reservation> reservations = await _hotel.GetAllReservations();
             _reservations.Clear();
@@ -49,9 +50,21 @@ namespace HotelReservationApp.Stores
             OnReservationCreated(reservation);
         }
 
+        public async Task DeleteReservation(Reservation reservation)
+        {
+            await _hotel.DeleteReservation(reservation);
+            _reservations.Remove(reservation);
+            OnReservationDeleted();
+        }
+
         public void OnReservationCreated(Reservation reservation)
         {
             ReservationCreated?.Invoke(reservation);
+        }
+
+        public void OnReservationDeleted()
+        {
+            ReservationDeleted?.Invoke();
         }
     }
 

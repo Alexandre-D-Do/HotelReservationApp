@@ -22,6 +22,16 @@ namespace HotelReservationApp.ViewModels
 
         public ICommand LoadReservationsCommand { get; }
         public ICommand MakeReservationCommand { get; }
+        public ICommand DeleteReservationCommand { get; }
+
+        private ReservationViewModel _selectedReservation;
+
+        public ReservationViewModel SelectedReservation
+        {
+            get { return _selectedReservation; }
+            set { _selectedReservation = value; }
+        }
+
 
         public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
         
@@ -62,12 +72,16 @@ namespace HotelReservationApp.ViewModels
 
             MakeReservationCommand = new NavigateCommand<MakeReservationViewModel>(makeReservationNavigationService);
 
+            DeleteReservationCommand = new DeleteReservationCommand(this, hotelStore);
+
             _hotelStore.ReservationCreated += OnReservationCreated;
+            _hotelStore.ReservationDeleted += OnReservationDeleted;
         }
 
         public override void Dispose()
         {
             _hotelStore.ReservationCreated -= OnReservationCreated;
+            _hotelStore.ReservationDeleted -= OnReservationDeleted;
             base.Dispose();
         }
 
@@ -75,6 +89,11 @@ namespace HotelReservationApp.ViewModels
         {
             ReservationViewModel reservationViewModel = new ReservationViewModel(reservation);
             _reservations.Add(reservationViewModel);
+        }
+
+        private void OnReservationDeleted()
+        {
+            _reservations.Remove(SelectedReservation);
         }
 
         public static ReservationListingViewModel LoadViewModel(HotelStore hotelStore, NavigationService<MakeReservationViewModel> makeReservationNavigationService)

@@ -1,6 +1,7 @@
 ﻿using HotelReservationApp.Exceptions;
 using HotelReservationApp.Services.ReservationConflictValidators;
 using HotelReservationApp.Services.ReservationCreators;
+using HotelReservationApp.Services.ReservationDeleters;
 using HotelReservationApp.Services.ReservationProviders;
 using System;
 using System.Collections.Generic;
@@ -14,12 +15,15 @@ namespace HotelReservationApp.Models
     {
         private readonly IReservationProvider _reservationProvider;
         private readonly IReservationCreator _reservationCreator;
+        private readonly IReservationDeleter _reservationDeleter;
         private readonly IReservationConflictValidator _reservationConflictValidator;
 
-        public ReservationBook(IReservationProvider reservationProvider, IReservationCreator reservationCreator, IReservationConflictValidator reservationConflictValidator)
+        public ReservationBook(IReservationProvider reservationProvider, IReservationCreator reservationCreator,  
+            IReservationDeleter reservationDeleter, IReservationConflictValidator reservationConflictValidator)
         {
             _reservationProvider = reservationProvider;
             _reservationCreator = reservationCreator;
+            _reservationDeleter = reservationDeleter;
             _reservationConflictValidator = reservationConflictValidator;
         }
 
@@ -49,6 +53,11 @@ namespace HotelReservationApp.Models
             }
 
             await _reservationCreator.CreateReservation(reservation);
+        }
+
+        public async Task DeleteReservation(Reservation reservation)
+        {
+            await _reservationDeleter.DeleteReservation(reservation);
         }
     }
 }

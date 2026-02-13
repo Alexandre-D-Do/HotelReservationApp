@@ -11,28 +11,28 @@ namespace HotelReservationApp.Commands
     public class LoadReservationsCommand : AsyncCommandBase
     {
         private readonly HotelStore _hotelStore;
-        private readonly ReservationListingViewModel _viewModel;
+        private readonly ReservationListingViewModel _reservationListingViewModel;
 
         public LoadReservationsCommand(ReservationListingViewModel viewModel, HotelStore hotelStore)
         {
             _hotelStore = hotelStore;
-            _viewModel = viewModel;
+            _reservationListingViewModel = viewModel;
         }
 
         public override async Task ExecuteAsync(object parameter)
         {
-            _viewModel.ErrorMessage = string.Empty;
-            _viewModel.IsLoading = true;
+            _reservationListingViewModel.ErrorMessage = string.Empty;
+            _reservationListingViewModel.IsLoading = true;
             try
             {
-                await _hotelStore.Load();
-                _viewModel.UpdateReservations(_hotelStore.Reservations);
+                await _hotelStore.Initialize();
+                _reservationListingViewModel.UpdateReservations(_hotelStore.Reservations);
             }
             catch (Exception)
             {
-                _viewModel.ErrorMessage= "Failed to load reservations.";
+                _reservationListingViewModel.ErrorMessage= "Failed to load reservations.";
             }
-            _viewModel.IsLoading = false;
+            _reservationListingViewModel.IsLoading = false;
         }
     }
 }

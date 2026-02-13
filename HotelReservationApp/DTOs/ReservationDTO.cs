@@ -5,7 +5,7 @@ using System.Text;
 
 namespace HotelReservationApp.DTOs
 {
-    internal class ReservationDTO
+    public class ReservationDTO
     {
         [Key]
         public Guid Id { get; set; }
