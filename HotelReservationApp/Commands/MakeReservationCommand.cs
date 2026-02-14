@@ -44,20 +44,12 @@ namespace HotelReservationApp.Commands
                 return false;
             }
 
-            return !string.IsNullOrWhiteSpace(_makeReservationViewModel.Username) &&
-                floorNumberValue > 0 &&
-                roomNumberValue > 0 &&
-                DateTime.Compare(_makeReservationViewModel.StartDate, _makeReservationViewModel.EndDate) < 0 &&
-                base.CanExecute(parameter);
+            return _makeReservationViewModel.CanCreateReservation && base.CanExecute(parameter);
         }
 
         private void OnViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(_makeReservationViewModel.Username) || 
-                e.PropertyName == nameof(_makeReservationViewModel.FloorNumber) || 
-                e.PropertyName == nameof(_makeReservationViewModel.RoomNumber) ||
-                e.PropertyName == nameof(_makeReservationViewModel.StartDate) ||
-                e.PropertyName == nameof(_makeReservationViewModel.EndDate))
+            if (e.PropertyName == nameof(_makeReservationViewModel.CanCreateReservation))
             {
                 OnExecuteChanged();
             }
@@ -65,7 +57,8 @@ namespace HotelReservationApp.Commands
 
         public override async Task ExecuteAsync(object parameter)
         {
-            _makeReservationViewModel.IsLoading = true;
+            _makeReservationViewModel.SubmitErrorMessage = string.Empty;
+            _makeReservationViewModel.IsSubmitting = true;
             Reservation reservation = new Reservation(
                 new RoomID(_makeReservationViewModel.FloorNumber, _makeReservationViewModel.RoomNumber),
                 _makeReservationViewModel.Username, 
@@ -75,6 +68,7 @@ namespace HotelReservationApp.Commands
 
             try
             {
+                await Task.Delay(2000);
                 await _hotelStore.MakeReservation(reservation);
                 MessageBox.Show("Successfully reserved.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 _reservationListingNavigationService.Navigate();
@@ -82,15 +76,17 @@ namespace HotelReservationApp.Commands
             }
             catch(ReservationConflictException)
             {
-                MessageBox.Show("This room is already taken within the selected timeframe.", 
-                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                _makeReservationViewModel.SubmitErrorMessage ="This room is already taken for the selected dates.";
+            }
+            catch (InvalidReservationTimeRangeException)
+            {
+                _makeReservationViewModel.SubmitErrorMessage = "Start date must be before end date";
             }
             catch (Exception)
             {
-                MessageBox.Show("Failed to make reservation.",
-                   "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                _makeReservationViewModel.SubmitErrorMessage = "Failed to make reservation";
             }
-            _makeReservationViewModel.IsLoading = false;
+            _makeReservationViewModel.IsSubmitting = false;
         }
     }
 }

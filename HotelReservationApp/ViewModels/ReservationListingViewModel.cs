@@ -5,6 +5,7 @@ using HotelReservationApp.Stores;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,6 +20,7 @@ namespace HotelReservationApp.ViewModels
         private readonly ObservableCollection<ReservationViewModel> _reservations;
 
         public IEnumerable<ReservationViewModel> Reservations => _reservations;
+        public bool HasReservations => _reservations.Any();
 
         public ICommand LoadReservationsCommand { get; }
         public ICommand MakeReservationCommand { get; }
@@ -76,6 +78,7 @@ namespace HotelReservationApp.ViewModels
 
             _hotelStore.ReservationCreated += OnReservationCreated;
             _hotelStore.ReservationDeleted += OnReservationDeleted;
+            _reservations.CollectionChanged += OnReservationsChanged;
         }
 
         public override void Dispose()
@@ -94,6 +97,11 @@ namespace HotelReservationApp.ViewModels
         private void OnReservationDeleted()
         {
             _reservations.Remove(SelectedReservation);
+        }
+
+        private void OnReservationsChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            OnPropertyChanged(nameof(HasReservations));
         }
 
         public static ReservationListingViewModel LoadViewModel(HotelStore hotelStore, NavigationService<MakeReservationViewModel> makeReservationNavigationService)

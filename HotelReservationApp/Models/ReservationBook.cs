@@ -40,11 +40,19 @@ namespace HotelReservationApp.Models
         /// Add a new reservation.
         /// </summary>
         /// <param name="reservation">The reservation to be added.</param>
+        /// /// <exception cref="InvalidReservationTimeRangeException">
+        /// Exception thrown if reservation start time is after end time.
+        /// </exception>
         /// <exception cref="ReservationConflictException">
         /// New reservation conflicts with existing reservation.
         /// </exception>
         public async Task AddReservation(Reservation reservation)
         {
+            if (reservation.StartDate > reservation.EndDate)
+            {
+                throw new InvalidReservationTimeRangeException(reservation);
+            }
+
             Reservation conflictingReservation = await _reservationConflictValidator.GetConflictingReservation(reservation);
 
             if (conflictingReservation != null)

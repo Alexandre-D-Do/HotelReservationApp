@@ -15,21 +15,19 @@ namespace HotelReservationApp.ViewModels
 {
     public class MakeReservationViewModel : ViewModelBase, INotifyDataErrorInfo
     {
-        
 
         private bool _isLoading;
+        public bool IsLoading
+        {
+            get { return _isLoading; }
+            set
+            {
+                _isLoading = value;
+                OnPropertyChanged(nameof(IsLoading));
+            }
+        }
 
-		public bool IsLoading
-		{
-			get { return _isLoading; }
-			set 
-			{ 
-				_isLoading = value;
-				OnPropertyChanged(nameof(IsLoading));
-			}
-		}
-
-		private string _username;
+        private string _username;
 		public string Username
 		{
 			get
@@ -40,7 +38,14 @@ namespace HotelReservationApp.ViewModels
 			{
 				_username = value;
 				OnPropertyChanged(nameof(Username));
-			}
+
+				ClearErrors(nameof(Username));
+				if (!HasUsername)
+				{
+					AddError("Username cannot be empty.", nameof(Username));
+				}
+                OnPropertyChanged(nameof(CanCreateReservation));
+            }
 		}
 
 		private string _floorNumber;
@@ -54,7 +59,14 @@ namespace HotelReservationApp.ViewModels
 			{
 				_floorNumber = value;
 				OnPropertyChanged(nameof(FloorNumber));
-			}
+
+                ClearErrors(nameof(FloorNumber));
+                if (!IsValidFloorNumber)
+                {
+                    AddError("Floor number must be greater than 0.", nameof(FloorNumber));
+                }
+                OnPropertyChanged(nameof(CanCreateReservation));
+            }
 		}
 
 		private string _roomNumber;
@@ -68,7 +80,14 @@ namespace HotelReservationApp.ViewModels
 			{
 				_roomNumber = value;
 				OnPropertyChanged(nameof(RoomNumber));
-			}
+
+                ClearErrors(nameof(RoomNumber));
+                if (!IsValidRoomNumber)
+                {
+                    AddError("Room number must be greater than 0.", nameof(RoomNumber));
+                }
+                OnPropertyChanged(nameof(CanCreateReservation));
+            }
 		}
 
 		private DateTime _startDate = new DateTime(2026, 1, 1);
@@ -86,10 +105,11 @@ namespace HotelReservationApp.ViewModels
 				ClearErrors(nameof(StartDate));
 				ClearErrors(nameof(EndDate));
 
-				if(EndDate < StartDate)
+				if(!HasStartDateBeforeEndDate)
 				{
 					AddError("The start date cannot be after the end date.", nameof(StartDate));
 				}
+				OnPropertyChanged(nameof(CanCreateReservation));
 
 			}
 		}
@@ -110,19 +130,58 @@ namespace HotelReservationApp.ViewModels
 				ClearErrors(nameof(StartDate));
                 ClearErrors(nameof(EndDate));
 
-                if (EndDate < StartDate)
+                if (!HasStartDateBeforeEndDate)
                 {
                     AddError("The end date cannot be before the start date.", nameof(EndDate));
                 }
 
+				OnPropertyChanged(nameof(CanCreateReservation));
 
             }
         }
 
-        public ICommand SubmitCommand { get;}
-        public ICommand CancelCommand { get; }
+		private bool HasUsername => !string.IsNullOrEmpty(Username);
+		private bool IsValidFloorNumber => int.Parse(FloorNumber) > 0;
+        private bool IsValidRoomNumber => int.Parse(RoomNumber) > 0;
+		private bool HasStartDateBeforeEndDate => StartDate < EndDate;
+		public bool HasSubmitErrorMessage => !string.IsNullOrEmpty(SubmitErrorMessage);
+		public bool CanCreateReservation => HasUsername && IsValidFloorNumber && IsValidRoomNumber && HasStartDateBeforeEndDate
+			&& !HasErrors;
 
-		
+		private string _submitErrorMessage;
+
+		public string SubmitErrorMessage
+		{
+			get 
+			{ 
+				return _submitErrorMessage; 
+			}
+			set 
+			{ 
+				_submitErrorMessage = value;
+                OnPropertyChanged(nameof(SubmitErrorMessage));
+                OnPropertyChanged(nameof(HasSubmitErrorMessage));
+            }
+		}
+
+		private bool _isSubmitting;
+
+		public bool IsSubmitting
+		{
+			get 
+			{ 
+				return _isSubmitting; 
+			}
+			set 
+			{ 
+				_isSubmitting = value; 
+				OnPropertyChanged(nameof(IsSubmitting));
+			}
+		}
+
+
+		public ICommand SubmitCommand { get;}
+        public ICommand CancelCommand { get; }
 
         public MakeReservationViewModel(HotelStore hotelStore, NavigationService<ReservationListingViewModel> reservationListingNavigationService)
         {

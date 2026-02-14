@@ -31,6 +31,9 @@ namespace HotelReservationApp.Models
         /// Make a reservation.
         /// </summary>
         /// <param name="reservation">The reservation to be made.</param>
+        /// /// <exception cref="InvalidReservationTimeRangeException">
+        /// Exception thrown if reservation start time is after end time.
+        /// </exception>
         /// <exception cref="ReservationConflictException">
         /// Exception thrown when new reservation conflicts with existing reservation.
         /// </exception>
