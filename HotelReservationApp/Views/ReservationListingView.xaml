@@ -33,13 +33,8 @@
                     <TextBlock Text="No reservations have been made." Visibility="{Binding HasReservations, Converter={StaticResource InverseBooleanToVisibilityConverter}}" Margin="0, 25, 0 ,0" />
                 </StackPanel>
                 <Grid Visibility="{Binding HasReservations, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <ListView SelectedItem="{Binding SelectedReservation}" Grid.Row="1" Margin="0, 50, 0 ,0" ItemsSource="{Binding Reservations}" 
-                          Visibility="{Binding HasErrorMessage, Converter={StaticResource InverseBooleanToVisibilityConverter}}" >
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="ListViewItem">
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                            </Style>
-                        </ListView.ItemContainerStyle>
+                    <ListView Style="{StaticResource DarkListView}" SelectedItem="{Binding SelectedReservation}" Grid.Row="1" Margin="0, 50, 0 ,0" ItemsSource="{Binding Reservations}" 
+                          Visibility="{Binding HasErrorMessage, Converter={StaticResource InverseBooleanToVisibilityConverter}}" SelectionChanged="ListView_SelectionChanged">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Room ID">

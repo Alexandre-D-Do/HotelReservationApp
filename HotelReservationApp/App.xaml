@@ -10,6 +10,7 @@
                 <ResourceDictionary Source="/Styles/CloseButtonStyles.xaml"/>
                 <ResourceDictionary Source="/Styles/TitleBarButtonStyles.xaml"/>
                 <ResourceDictionary Source="/Styles/ApplicationButtonStyles.xaml"/>
+                <ResourceDictionary Source="/Styles/DarkListViewStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <Style TargetType="Button">
                 <Setter Property="Padding" Value="10, 5" />

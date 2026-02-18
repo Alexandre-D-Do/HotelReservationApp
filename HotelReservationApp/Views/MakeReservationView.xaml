@@ -70,8 +70,8 @@
             </Grid>
 
             <StackPanel Grid.Row= "4" Margin="0, 25, 0, 0" Orientation="Horizontal">
-                <Button Style="{StaticResource ApplicationButton}" Content="Submit" Width="75" FontSize="10" Command="{Binding SubmitCommand}"/>
-                <Button Content="Cancel" Width="75" FontSize="10" Margin="10,0, 0, 0" Command="{Binding CancelCommand}">
+                <Button Style="{StaticResource ApplicationButton}" Content="Submit" Width="75" Height="25" FontSize="10" Command="{Binding SubmitCommand}"/>
+                <Button Content="Cancel" Width="75" Height="25" FontSize="10" Margin="10,0, 0, 0" Command="{Binding CancelCommand}">
                     <Button.Style>
                         <Style BasedOn="{StaticResource ApplicationButton}" TargetType="Button">
                             <Style.Triggers>
@@ -88,7 +88,7 @@
                     Diameter="15"
                     IsLoading="{Binding IsSubmitting}"
                     Thickness="3"
-                    Color="Black" />
+                    Color="White" />
             </StackPanel>
             <TextBlock
             Grid.Row="5"
