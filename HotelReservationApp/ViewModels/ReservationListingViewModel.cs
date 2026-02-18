@@ -20,7 +20,9 @@ namespace HotelReservationApp.ViewModels
         private readonly ObservableCollection<ReservationViewModel> _reservations;
 
         public IEnumerable<ReservationViewModel> Reservations => _reservations;
-        public bool HasReservations => _reservations.Any();
+        public bool DisplayHasNoReservationsMsg => CheckDisplayHasReservationMessage();
+
+        public bool DisplayDeleteButton => CheckDisplayDeleteButton();
 
         public ICommand LoadReservationsCommand { get; }
         public ICommand MakeReservationCommand { get; }
@@ -101,7 +103,8 @@ namespace HotelReservationApp.ViewModels
 
         private void OnReservationsChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            OnPropertyChanged(nameof(HasReservations));
+            OnPropertyChanged(nameof(DisplayHasNoReservationsMsg));
+            OnPropertyChanged(nameof(DisplayDeleteButton));
         }
 
         public static ReservationListingViewModel LoadViewModel(HotelStore hotelStore, NavigationService<MakeReservationViewModel> makeReservationNavigationService)
@@ -119,6 +122,30 @@ namespace HotelReservationApp.ViewModels
             {
                 ReservationViewModel reservationViewModel = new ReservationViewModel(reservation);
                 _reservations.Add(reservationViewModel);
+            }
+        }
+
+        private bool CheckDisplayHasReservationMessage()
+        {
+            if (HasErrorMessage == false && _reservations.Any() == false)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private bool CheckDisplayDeleteButton()
+        {
+            if(_reservations.Any() == true && HasErrorMessage == false)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }

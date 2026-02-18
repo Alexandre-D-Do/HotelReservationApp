@@ -10,7 +10,7 @@ using System.Text;
 
 namespace HotelReservationApp.HostBuilders
 {
-    public  static class AddViewModelsHostBuilderExtensions
+    public static class AddViewModelsHostBuilderExtensions
     {
         public static IHostBuilder AddViewModels(this IHostBuilder hostBuilder)
         {

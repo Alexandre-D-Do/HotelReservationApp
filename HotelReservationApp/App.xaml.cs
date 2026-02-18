@@ -3,10 +3,6 @@ using HotelReservationApp.Exceptions;
 using HotelReservationApp.HostBuilders;
 using HotelReservationApp.Models;
 using HotelReservationApp.Services;
-using HotelReservationApp.Services.ReservationConflictValidators;
-using HotelReservationApp.Services.ReservationCreators;
-using HotelReservationApp.Services.ReservationDeleters;
-using HotelReservationApp.Services.ReservationProviders;
 using HotelReservationApp.Stores;
 using HotelReservationApp.ViewModels;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +21,7 @@ namespace HotelReservationApp
     public partial class App : Application
     {
         private readonly IHost _host;
+        
 
 
         public App()
@@ -32,7 +29,7 @@ namespace HotelReservationApp
             /// Look into logging
 
             //Create builder
-            _host = Host.CreateDefaultBuilder().AddViewModels()
+            _host = Host.CreateDefaultBuilder().AddViewModels().AddServices()
                 .ConfigureServices((hostContext, services) =>
             {
                 string connectionString = hostContext.Configuration.GetConnectionString("ReservationsDatabase");
@@ -42,11 +39,7 @@ namespace HotelReservationApp
                 {
                     options.UseSqlServer(connectionString);
                 });
-                /// Register our services
-                services.AddSingleton<IReservationProvider, DatabaseReservationProvider>((s) => new DatabaseReservationProvider(connectionString));
-                services.AddSingleton<IReservationCreator, DatabaseReservationCreator>((s) => new DatabaseReservationCreator(connectionString));
-                services.AddSingleton<IReservationDeleter, DatabaseReservationDeleter>((s) => new DatabaseReservationDeleter(connectionString));
-                services.AddSingleton<IReservationConflictValidator, DatabaseReservationConflictValidator>((s) => new DatabaseReservationConflictValidator(connectionString));
+                
 
                 /// Register Reservation Book and Hotel through factory function
                 services.AddTransient<ReservationBook>();
