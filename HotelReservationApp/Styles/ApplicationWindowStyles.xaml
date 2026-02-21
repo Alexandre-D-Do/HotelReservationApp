@@ -29,4 +29,19 @@
     <Style TargetType="{x:Type ContentControl}">
         <Setter Property="Validation.ErrorTemplate" Value="{x:Null}"/>
     </Style>
+    <ControlTemplate x:Key="ErrorTemplate">
+        <StackPanel HorizontalAlignment="Left">
+            <Border BorderBrush="Red" BorderThickness="1" HorizontalAlignment="Left" SnapsToDevicePixels="True" Padding="0">
+                <AdornedElementPlaceholder/>
+            </Border>
+            <TextBlock Foreground="Red" FontSize="12" Text="{Binding [0].ErrorContent}" Margin="0,2,0,0" />
+        </StackPanel>
+    </ControlTemplate>
+    <Style x:Key="TextBoxErrorTemplate" TargetType="TextBox">
+        <Setter Property="Validation.ErrorTemplate" Value="{StaticResource ErrorTemplate}"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+    <Style TargetType="DatePicker">
+        <Setter Property="Validation.ErrorTemplate" Value="{StaticResource ErrorTemplate}"/>
+    </Style>
 </ResourceDictionary>

@@ -12,7 +12,7 @@ namespace HotelReservationApp.Stores
         private readonly List<Reservation> _reservations;
         private Lazy<Task> _initializeLazy;
         public IEnumerable<Reservation> Reservations => _reservations;
-        public event Action ReservationDeleted;
+ 
 
         public HotelStore(Hotel hotel)
         {

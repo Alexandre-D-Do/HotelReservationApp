@@ -18,6 +18,7 @@ namespace HotelReservationApp
     {
         public MainWindow()
         {
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
             InitializeComponent();
         }
 

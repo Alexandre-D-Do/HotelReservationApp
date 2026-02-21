@@ -37,21 +37,21 @@ namespace HotelReservationApp.ViewModels
 
 		[ObservableProperty]
         [NotifyDataErrorInfo]
-        [Range(1, double.MaxValue, ErrorMessage = "Floor number must be greater than 0.")]
+        [Range(1, int.MaxValue, ErrorMessage = "Floor number is less than 0.")]
 		[NotifyPropertyChangedFor(nameof(CanCreateReservation))]
         [NotifyCanExecuteChangedFor(nameof(SubmitCommand))]
-        private int _floorNumber;
+        private int? _floorNumber = 1;
 
         [ObservableProperty]
         [NotifyDataErrorInfo]
-        [Range(1, double.MaxValue, ErrorMessage = "Room number must be greater than 0.")]
+        [Range(1, int.MaxValue, ErrorMessage = "Room number is less than 0.")]
         [NotifyPropertyChangedFor(nameof(CanCreateReservation))]
         [NotifyCanExecuteChangedFor(nameof(SubmitCommand))]
-        private int _roomNumber;
+        private int? _roomNumber = 1;
 
 		[ObservableProperty]
         [NotifyDataErrorInfo]
-        [CustomValidation(typeof(MakeReservationViewModel), nameof(ValidateDates), ErrorMessage = "The start date cannot be after the end date.")]
+        [CustomValidation(typeof(MakeReservationViewModel), nameof(ValidateDates), ErrorMessage = "Start date is after end date.")]
         [NotifyPropertyChangedFor(nameof(CanCreateReservation))]
         [NotifyCanExecuteChangedFor(nameof(SubmitCommand))]
         private DateTime _startDate = new DateTime(2026, 1, 1);
@@ -64,7 +64,7 @@ namespace HotelReservationApp.ViewModels
 
         [ObservableProperty]
         [NotifyDataErrorInfo]
-        [CustomValidation(typeof(MakeReservationViewModel), nameof(ValidateDates), ErrorMessage = "The end date cannot be before the start date.")]
+        [CustomValidation(typeof(MakeReservationViewModel), nameof(ValidateDates), ErrorMessage = "End date is before start date.")]
         [NotifyPropertyChangedFor(nameof(CanCreateReservation))]
         [NotifyCanExecuteChangedFor(nameof(SubmitCommand))]
         private DateTime _endDate = new DateTime(2026, 1, 8);
@@ -85,7 +85,7 @@ namespace HotelReservationApp.ViewModels
                 return ValidationResult.Success;
             }
 
-            return new ValidationResult("Start date must be before end date.");
+            return new ValidationResult("Start date is after end date.");
         }
 
         private bool HasUsername => !string.IsNullOrEmpty(Username);
@@ -119,7 +119,8 @@ namespace HotelReservationApp.ViewModels
                 await _hotelStore.MakeReservation(reservation);
                 MessageBox.Show("Successfully reserved.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 _reservationListingNavigationService.Navigate();
-
+                Application.Current.MainWindow.Width = 500;
+                Application.Current.MainWindow.Height = 275;
             }
             catch (ReservationConflictException)
             {
@@ -140,8 +141,11 @@ namespace HotelReservationApp.ViewModels
         private void Cancel()
         {
             _reservationListingNavigationService.Navigate();
-        }
+            Application.Current.MainWindow.Width = 500;
+            Application.Current.MainWindow.Height = 275;
 
+        }
+   
         public MakeReservationViewModel(HotelStore hotelStore, NavigationService<ReservationListingViewModel> reservationListingNavigationService)
         {
 			_hotelStore = hotelStore;

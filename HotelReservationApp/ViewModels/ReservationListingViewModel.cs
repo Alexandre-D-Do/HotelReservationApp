@@ -48,6 +48,9 @@ namespace HotelReservationApp.ViewModels
         private void MakeReservation()
         {
             _makeReservationNavigationService.Navigate();
+            Application.Current.MainWindow.Width = 500;
+            Application.Current.MainWindow.Height = 375;
+
         }
 
         [RelayCommand]

@@ -10,10 +10,10 @@ namespace HotelReservationApp.Models
     {
         
 
-        public int FloorNumber { get; }
-        public int RoomNumber { get; }
+        public int? FloorNumber { get; }
+        public int? RoomNumber { get; }
 
-        public RoomID(int floorNumber, int roomNumber)
+        public RoomID(int? floorNumber, int? roomNumber)
         {
             FloorNumber = floorNumber;
             RoomNumber = roomNumber;

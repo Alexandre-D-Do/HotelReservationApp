@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:HotelReservationApp" xmlns:views="clr-namespace:HotelReservationApp.Views"
         xmlns:vms="clr-namespace:HotelReservationApp.ViewModels" xmlns:userControls="clr-namespace:HotelReservationApp.UserControls"
         mc:Ignorable="d"
-        Title="Hotel Reservation Application" Height="450" Width="600"
+        Title="Hotel Reservation Application" 
+        Height="275" Width="500"
         FontSize="14"
         Style="{StaticResource ApplicationWindow}">
     <Grid>
@@ -26,7 +27,7 @@
                     </DataTemplate>
                 </Grid.Resources>
 
-                <ContentControl Content="{Binding CurrentViewModel}"/>
+                <ContentControl Margin="25,0,25,0"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="{Binding CurrentViewModel}"/>
 
             </Grid>
         </ScrollViewer>
