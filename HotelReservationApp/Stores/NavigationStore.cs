@@ -1,4 +1,5 @@
-﻿using HotelReservationApp.ViewModels;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using HotelReservationApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,18 +10,29 @@ namespace HotelReservationApp.Stores
 {
     public class NavigationStore
     {
-        private ViewModelBase _currentViewModel;
-
         public event Action CurrentViewModelChanged;
 
-        public ViewModelBase CurrentViewModel
+        private IPageViewModel _currentViewModel;
+
+        public IPageViewModel CurrentViewModel
         {
             get => _currentViewModel;
             
             set
             {
-                _currentViewModel?.Dispose();
+                //Set IsActive to false for the current view model before changing it.
+                if (_currentViewModel != null)
+                {
+                    _currentViewModel.IsActive = false;
+                }
+
                 _currentViewModel = value;
+
+                //Set IsActive to true for the new view model after changing it.
+                if (_currentViewModel != null)
+                {
+                    _currentViewModel.IsActive = true;
+                }
                 OnCurrentViewModelChanged();
             }
         }

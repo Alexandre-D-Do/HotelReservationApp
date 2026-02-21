@@ -33,7 +33,7 @@
                     <TextBlock Text="No reservations have been made." Visibility="{Binding DisplayHasNoReservationsMsg, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0, 25, 0 ,0" />
                 </StackPanel>
                 <Grid Visibility="{Binding DisplayHasNoReservationsMsg, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
-                    <ListView Style="{StaticResource DarkListView}" SelectedItem="{Binding SelectedReservation}" Grid.Row="1" Margin="0, 50, 0 ,0" ItemsSource="{Binding Reservations}" 
+                    <ListView Style="{StaticResource DarkListView}" SelectedItem="{Binding SelectedReservation}" Grid.Row="1" Width="400" Margin="0, 50, 0 ,0" ItemsSource="{Binding Reservations}" 
                           Visibility="{Binding HasErrorMessage, Converter={StaticResource InverseBooleanToVisibilityConverter}}" SelectionChanged="ListView_SelectionChanged">
                         <ListView.View>
                             <GridView>

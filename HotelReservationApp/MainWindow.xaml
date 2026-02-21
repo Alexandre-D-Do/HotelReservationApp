@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:HotelReservationApp" xmlns:views="clr-namespace:HotelReservationApp.Views"
         xmlns:vms="clr-namespace:HotelReservationApp.ViewModels" xmlns:userControls="clr-namespace:HotelReservationApp.UserControls"
         mc:Ignorable="d"
-        Title="Hotel Reservation Application" Height="450" Width="800"
+        Title="Hotel Reservation Application" Height="450" Width="600"
         FontSize="14"
         Style="{StaticResource ApplicationWindow}">
     <Grid>

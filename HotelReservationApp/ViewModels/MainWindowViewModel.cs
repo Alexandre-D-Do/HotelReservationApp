@@ -1,4 +1,5 @@
-﻿using HotelReservationApp.Models;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using HotelReservationApp.Models;
 using HotelReservationApp.Stores;
 using System;
 using System.Collections.Generic;
@@ -8,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace HotelReservationApp.ViewModels
 {
-    internal class MainWindowViewModel : ViewModelBase
+    public class MainWindowViewModel : ObservableObject
     {
         private readonly NavigationStore _navigationStore;
 
-        public ViewModelBase CurrentViewModel => _navigationStore.CurrentViewModel;
+        public IPageViewModel CurrentViewModel => _navigationStore.CurrentViewModel;
         public MainWindowViewModel(NavigationStore navigationStore)
         {
             _navigationStore = navigationStore;

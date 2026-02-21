@@ -1,4 +1,6 @@
-﻿using HotelReservationApp.Commands;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using HotelReservationApp.Models;
 using HotelReservationApp.Services;
 using HotelReservationApp.Stores;
@@ -9,94 +11,105 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace HotelReservationApp.ViewModels
 {
-    public class ReservationListingViewModel : ViewModelBase
+    public partial class ReservationListingViewModel : ObservableRecipient, IRecipient<ReservationCreatedMessage>, IRecipient<ReservationDeletedMessage>, IPageViewModel
     {
-        
+
         private readonly HotelStore _hotelStore;
         private readonly ObservableCollection<ReservationViewModel> _reservations;
+        private readonly NavigationService<MakeReservationViewModel> _makeReservationNavigationService;
 
         public IEnumerable<ReservationViewModel> Reservations => _reservations;
         public bool DisplayHasNoReservationsMsg => CheckDisplayHasReservationMessage();
-
         public bool DisplayDeleteButton => CheckDisplayDeleteButton();
 
-        public ICommand LoadReservationsCommand { get; }
-        public ICommand MakeReservationCommand { get; }
-        public ICommand DeleteReservationCommand { get; }
+        [RelayCommand]
+        private async Task LoadReservations()
+        {
+            ErrorMessage = string.Empty;
+            IsLoading = true;
+            try
+            {
+                await _hotelStore.Initialize();
+                UpdateReservations(_hotelStore.Reservations);
+            }
+            catch (Exception)
+            {
+                ErrorMessage = "Failed to load reservations.";
+            }
+            IsLoading = false;
+        }
 
+        [RelayCommand]
+        private void MakeReservation()
+        {
+            _makeReservationNavigationService.Navigate();
+        }
+
+        [RelayCommand]
+        private async Task DeleteReservation()
+        {
+            try
+            {
+                ReservationViewModel reservationViewModel = SelectedReservation;
+                Reservation reservation = new Reservation(
+                    new RoomID(reservationViewModel.FloorNumber, reservationViewModel.RoomNumber),
+                    reservationViewModel.Username, reservationViewModel.StartDateData, reservationViewModel.EndDateData);
+                await _hotelStore.DeleteReservation(reservation);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error deleting reservation.", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        [ObservableProperty]
         private ReservationViewModel _selectedReservation;
 
-        public ReservationViewModel SelectedReservation
-        {
-            get { return _selectedReservation; }
-            set { _selectedReservation = value; }
-        }
-
-
-        public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
-        
+        [ObservableProperty]
         private bool _isLoading;
 
-        public bool IsLoading
-        {
-            get { return _isLoading; }
-            set 
-            { 
-                _isLoading = value;
-                OnPropertyChanged(nameof(IsLoading));
-            }
-        }
-
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(HasErrorMessage))]
         private string _errorMessage;
-        public string ErrorMessage
-        {
-            get
-            {
-                return _errorMessage;
-            }
-            set
-            {
-                _errorMessage = value;
-                OnPropertyChanged(nameof(ErrorMessage));
-                OnPropertyChanged(nameof(HasErrorMessage));
-            }
-        }
 
-        public ReservationListingViewModel(HotelStore hotelStore, NavigationService<MakeReservationViewModel> makeReservationNavigationService) 
+        public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
+
+        public ReservationListingViewModel(HotelStore hotelStore, NavigationService<MakeReservationViewModel> makeReservationNavigationService)
         {
             _hotelStore = hotelStore;
 
             _reservations = new ObservableCollection<ReservationViewModel>();
 
-            LoadReservationsCommand = new LoadReservationsCommand(this, hotelStore);
+            _makeReservationNavigationService = makeReservationNavigationService;
 
-            MakeReservationCommand = new NavigateCommand<MakeReservationViewModel>(makeReservationNavigationService);
-
-            DeleteReservationCommand = new DeleteReservationCommand(this, hotelStore);
-
-            _hotelStore.ReservationCreated += OnReservationCreated;
-            _hotelStore.ReservationDeleted += OnReservationDeleted;
             _reservations.CollectionChanged += OnReservationsChanged;
+
         }
 
-        public override void Dispose()
+        protected override void OnActivated()
         {
-            _hotelStore.ReservationCreated -= OnReservationCreated;
-            _hotelStore.ReservationDeleted -= OnReservationDeleted;
-            base.Dispose();
+            StrongReferenceMessenger.Default.RegisterAll(this);
+            base.OnActivated();
         }
 
-        private void OnReservationCreated(Reservation reservation)
+        protected override void OnDeactivated()
         {
-            ReservationViewModel reservationViewModel = new ReservationViewModel(reservation);
+            StrongReferenceMessenger.Default.UnregisterAll(this);
+            base.OnDeactivated();
+        }
+
+        public void Receive(ReservationCreatedMessage message)
+        {
+            ReservationViewModel reservationViewModel = new ReservationViewModel(message.Value);
             _reservations.Add(reservationViewModel);
         }
 
-        private void OnReservationDeleted()
+        public void Receive(ReservationDeletedMessage message)
         {
             _reservations.Remove(SelectedReservation);
         }
@@ -139,7 +152,7 @@ namespace HotelReservationApp.ViewModels
 
         private bool CheckDisplayDeleteButton()
         {
-            if(_reservations.Any() == true && HasErrorMessage == false)
+            if (_reservations.Any() == true && HasErrorMessage == false)
             {
                 return true;
             }
@@ -148,5 +161,7 @@ namespace HotelReservationApp.ViewModels
                 return false;
             }
         }
+
+
     }
 }

@@ -26,4 +26,7 @@
         </Setter>
         <EventSetter Event="MouseLeftButtonDown" Handler="Window_MouseLeftButtonDown"/>
     </Style>
+    <Style TargetType="{x:Type ContentControl}">
+        <Setter Property="Validation.ErrorTemplate" Value="{x:Null}"/>
+    </Style>
 </ResourceDictionary>

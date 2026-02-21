@@ -33,7 +33,7 @@ namespace HotelReservationApp.Services.ReservationProviders
 
         private static Reservation ToReservation(ReservationDTO reservationDTO)
         {
-            return new Reservation(new RoomID(reservationDTO.FloorNumber.ToString(), reservationDTO.RoomNumber.ToString()), reservationDTO.Username, reservationDTO.StartDate, reservationDTO.EndDate);
+            return new Reservation(new RoomID(reservationDTO.FloorNumber, reservationDTO.RoomNumber), reservationDTO.Username, reservationDTO.StartDate, reservationDTO.EndDate);
         }
     }
 }

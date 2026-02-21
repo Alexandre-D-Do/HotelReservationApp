@@ -1,4 +1,5 @@
-﻿using HotelReservationApp.Models;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using HotelReservationApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,7 +12,6 @@ namespace HotelReservationApp.Stores
         private readonly List<Reservation> _reservations;
         private Lazy<Task> _initializeLazy;
         public IEnumerable<Reservation> Reservations => _reservations;
-        public event Action<Reservation> ReservationCreated;
         public event Action ReservationDeleted;
 
         public HotelStore(Hotel hotel)
@@ -54,17 +54,17 @@ namespace HotelReservationApp.Stores
         {
             await _hotel.DeleteReservation(reservation);
             _reservations.Remove(reservation);
-            OnReservationDeleted();
+            OnReservationDeleted(reservation);
         }
 
         public void OnReservationCreated(Reservation reservation)
         {
-            ReservationCreated?.Invoke(reservation);
+            StrongReferenceMessenger.Default.Send(new ReservationCreatedMessage(reservation));
         }
 
-        public void OnReservationDeleted()
+        public void OnReservationDeleted(Reservation reservation)
         {
-            ReservationDeleted?.Invoke();
+            StrongReferenceMessenger.Default.Send(new ReservationDeletedMessage(reservation));
         }
     }
 

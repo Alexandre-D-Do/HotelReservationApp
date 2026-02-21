@@ -1,4 +1,5 @@
-﻿using HotelReservationApp.Stores;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using HotelReservationApp.Stores;
 using HotelReservationApp.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 namespace HotelReservationApp.Services
 {
     ///Making NavigationService generic using TViewModel allows registering navigation services for specific viewmodels
-    public class NavigationService<TViewModel> where TViewModel : ViewModelBase
+    public class NavigationService<TViewModel> where TViewModel : IPageViewModel
     {
         private readonly NavigationStore _navigationStore;
         private readonly Func<TViewModel> _createViewModel;
