@@ -9,6 +9,9 @@ A simple WPF application for making and listing hotel reservations.
 
 ## Build & Run
 
+Published self contained file can be found at:
+"HotelReservationApp\HotelReservationApp\bin\Release\net10.0-windows7.0\win-x64\publish\HotelReservationApp.exe"
+
 Using Visual Studio
 
 1. Open the solution file in Visual Studio.
