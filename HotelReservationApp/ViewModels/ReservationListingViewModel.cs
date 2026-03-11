@@ -22,10 +22,21 @@ namespace HotelReservationApp.ViewModels
         private readonly HotelStore _hotelStore;
         private readonly ObservableCollection<ReservationViewModel> _reservations;
         private readonly NavigationService<MakeReservationViewModel> _makeReservationNavigationService;
-
         public IEnumerable<ReservationViewModel> Reservations => _reservations;
         public bool DisplayHasNoReservationsMsg => CheckDisplayHasReservationMessage();
         public bool DisplayDeleteButton => CheckDisplayDeleteButton();
+
+        public ReservationListingViewModel(HotelStore hotelStore, NavigationService<MakeReservationViewModel> makeReservationNavigationService)
+        {
+            _hotelStore = hotelStore;
+
+            _reservations = new ObservableCollection<ReservationViewModel>();
+
+            _makeReservationNavigationService = makeReservationNavigationService;
+
+            _reservations.CollectionChanged += OnReservationsChanged;
+
+        }
 
         [RelayCommand]
         private async Task LoadReservations()
@@ -82,17 +93,7 @@ namespace HotelReservationApp.ViewModels
 
         public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
 
-        public ReservationListingViewModel(HotelStore hotelStore, NavigationService<MakeReservationViewModel> makeReservationNavigationService)
-        {
-            _hotelStore = hotelStore;
-
-            _reservations = new ObservableCollection<ReservationViewModel>();
-
-            _makeReservationNavigationService = makeReservationNavigationService;
-
-            _reservations.CollectionChanged += OnReservationsChanged;
-
-        }
+        
 
         protected override void OnActivated()
         {

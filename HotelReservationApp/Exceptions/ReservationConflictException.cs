@@ -10,24 +10,24 @@ namespace HotelReservationApp.Exceptions
 {
     internal class ReservationConflictException : Exception
     {
-        public Reservation ExistingException { get; }
+        public Reservation ExistingReservation { get; }
         public Reservation IncomingReservation { get; }
 
-        public ReservationConflictException(Reservation existingException, Reservation incomingReservation)
+        public ReservationConflictException(Reservation existingReservation, Reservation incomingReservation)
         {
-            ExistingException = existingException;
+            ExistingReservation = existingReservation;
             IncomingReservation = incomingReservation;
         }
 
-        public ReservationConflictException(string? message, Reservation existingException, Reservation incomingReservation) : base(message)
+        public ReservationConflictException(string? message, Reservation existingReservation, Reservation incomingReservation) : base(message)
         {
-            ExistingException = existingException;
+            ExistingReservation = existingReservation;
             IncomingReservation = incomingReservation;
         }
 
-        public ReservationConflictException(string? message, Exception? innerException, Reservation existingException, Reservation incomingReservation) : base(message, innerException)
+        public ReservationConflictException(string? message, Exception? innerException, Reservation existingReservation, Reservation incomingReservation) : base(message, innerException)
         {
-            ExistingException = existingException;
+            ExistingReservation = existingReservation;
             IncomingReservation = incomingReservation;
         }
 

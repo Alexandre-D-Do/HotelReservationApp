@@ -118,7 +118,7 @@ namespace HotelReservationApp.ViewModels
             {
                 await _hotelStore.MakeReservation(reservation);
                 MessageBox.Show("Successfully reserved.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                _reservationListingNavigationService.Navigate();
+                _reservationListingNavigationService.Navigate(); 
                 Application.Current.MainWindow.Width = 500;
                 Application.Current.MainWindow.Height = 275;
             }

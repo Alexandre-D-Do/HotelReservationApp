@@ -24,5 +24,6 @@ namespace HotelReservationApp.ViewModels
         {
             OnPropertyChanged(nameof(CurrentViewModel));
         }
-    }
+
+    } 
 }

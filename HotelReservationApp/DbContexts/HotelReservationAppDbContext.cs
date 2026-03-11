@@ -12,11 +12,6 @@ namespace HotelReservationApp.DbContexts
     {
         public DbSet<ReservationDTO> Reservations { get; set; }
 
-        public HotelReservationAppDbContext(DbContextOptions<HotelReservationAppDbContext> options) : base(options)
-        {
-        }
-
-        
-
+        public HotelReservationAppDbContext(DbContextOptions<HotelReservationAppDbContext> options) : base(options) {}
     }
 }
