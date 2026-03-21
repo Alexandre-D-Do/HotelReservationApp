@@ -11,7 +11,7 @@ namespace HotelReservationApp.Services.ReservationConflictValidators
 {
     public class DatabaseReservationConflictValidator : IReservationConflictValidator
     {
-        string _connectionString;
+        private string _connectionString;
 
         public DatabaseReservationConflictValidator(string connectionString)
         {

@@ -10,7 +10,7 @@ namespace HotelReservationApp.Services.ReservationDeleters
 {
     public class DatabaseReservationDeleter : IReservationDeleter
     {
-        string _connectionString;
+        private string _connectionString;
 
         public DatabaseReservationDeleter(string connectionString)
         {

@@ -11,7 +11,7 @@ namespace HotelReservationApp.Services.ReservationCreators
 {
     public class DatabaseReservationCreator : IReservationCreator
     {
-        string _connectionString;
+        private string _connectionString;
 
         public DatabaseReservationCreator(string connectionString)
         {

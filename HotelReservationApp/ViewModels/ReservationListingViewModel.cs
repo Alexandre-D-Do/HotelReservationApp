@@ -93,8 +93,6 @@ namespace HotelReservationApp.ViewModels
 
         public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
 
-        
-
         protected override void OnActivated()
         {
             StrongReferenceMessenger.Default.RegisterAll(this);

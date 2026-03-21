@@ -14,6 +14,7 @@ namespace HotelReservationApp.ViewModels
         private readonly NavigationStore _navigationStore;
 
         public IPageViewModel CurrentViewModel => _navigationStore.CurrentViewModel;
+
         public MainWindowViewModel(NavigationStore navigationStore)
         {
             _navigationStore = navigationStore;

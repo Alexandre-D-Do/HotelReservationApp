@@ -12,7 +12,7 @@ namespace HotelReservationApp.Services.ReservationProviders
 {
     public class DatabaseReservationProvider : IReservationProvider
     {
-        string _connectionString;
+        private string _connectionString;
 
         public DatabaseReservationProvider(string connectionString)
         {
